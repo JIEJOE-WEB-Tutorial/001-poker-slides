@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pokers</title>
+    <style>
+        div {
+            user-select: none;
+        }
+
+        * {
+            font-size: 2vmin;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            background-color: #000;
+        }
+
+        .container {
+            position: absolute;
+            width: 45rem;
+            height: 25rem;
+            margin-bottom: 1rem;
+        }
+
+        .poker,
+        .poker_top {
+            position: absolute;
+            width: 20rem;
+            height: 26rem;
+            border: 0.15rem solid #fff;
+            border-radius: 1.5rem;
+            background-color: #17f700;
+            transform-origin: bottom left;
+            overflow: hidden;
+        }
+
+        .poker img {
+            position: relative;
+            width: 100%;
+        }
+
+        .poker_top {
+            background-color: #fff;
+            transition: 0.3s ease;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .poker_top:hover {
+            background-color: #aaa;
+        }
+
+        .poker1 {
+            transform: rotate(-10deg);
+        }
+
+        .poker2 {
+            transform: rotate(-6deg) translate(35%, -12%);
+        }
+
+        .poker3 {
+            transform: rotate(-2deg) translate(65%, -19%);
+        }
+
+        .poker4 {
+            transform: rotate(2deg) translate(95%, -26%);
+        }
+
+        .poker5 {
+            transform: rotate(6deg) translate(125%, -23%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="poker poker1">
+            <img src="./photos/photo (4).webp" />
+        </div>
+        <div class="poker poker2">
+            <img src="./photos/photo (3).webp" />
+        </div>
+        <div class="poker poker3">
+            <img src="./photos/photo (2).webp" />
+        </div>
+        <div class="poker poker4">
+            <img src="./photos/photo (1).webp" />
+        </div>
+        <div class="poker poker5">
+            <img src="./photos/photo (0).webp" />
+        </div>
+        <div class="poker_top poker5" onclick="poker.move()"></div>
+    </div>
+</body>
+<script>
+    // JIEJOE produce
+    // b站主页：https://space.bilibili.com/3546390319860710
+    const poker = {
+        imgs: [],
+        img_index: 0,
+        poker_eles: {},
+        transform_datas: [
+            "rotate(-10deg)",
+            "rotate(-6deg) translate(35%, -12%)",
+            "rotate(-2deg) translate(65%, -19%)",
+            "rotate(2deg) translate(95%, -26%)",
+            "rotate(6deg) translate(125%, -23%)",
+        ],
+        init() {
+            for (let i = 0; i < 9; i++) {
+                let img = new Image();
+                img.src = `./photos/photo (${i}).webp`;
+                this.imgs.push(img);
+            }
+            this.poker_eles = [...document.getElementsByClassName("poker")];
+            this.poker_eles.forEach((obj, index) => {
+                obj.nums = index;
+            });
+
+            this.img_index = this.poker_eles.length;
+        },
+        move() {
+            this.poker_eles.map((ele) => {
+                let nums = ele.nums;
+                if (nums + 1 >= this.poker_eles.length) {
+                    nums = 0;
+                    ele.style.transition = "";
+                    ele.querySelector("img").src =
+                        this.imgs[this.img_index].src;
+                    this.img_index++;
+                    if (this.img_index >= this.imgs.length)
+                        this.img_index = 0;
+                } else {
+                    nums += 1;
+                    ele.style.transition = "transform 0.3s ease";
+                }
+                ele.style.zIndex = nums;
+                ele.style.transform = this.transform_datas[nums];
+                ele.nums = nums;
+            });
+        },
+    };
+    poker.init();
+</script>
+
+</html>
